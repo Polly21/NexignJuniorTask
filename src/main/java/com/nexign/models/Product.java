@@ -14,17 +14,10 @@ import java.io.Serializable;
 //INSERT INTO products (producer,calories,carbohydrate,fat,proteins) values ("qwe",14.45,12.12,13.13,14.14);
 @Entity
 @Table(name = "products")
-
 public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @OneToOne
-//    @JoinColumn(name="product_id")
-//    private ProductStatus id;
     private Integer id;
-
-//    @OneToOne(mappedBy="productId")
-//    private ProductStatus productStatus;
 
     private String producer;
 

@@ -1,0 +1,59 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="1" author="Kirill">
+        <createTable tableName="Products">
+            <column name="id" type="bigint(20)" autoIncrement="true" incrementBy="1" startWith="1">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="producer" type="numeric(2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="calorie" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="protein" type="numeric(2)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="fat" type="numeric(2)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="carbohydrate" type="numeric(2)">
+                <constraints nullable="true"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="Kirill">
+        <createTable tableName="availableProducts">
+
+            <column name="ID" type="bigint(20)" autoIncrement="true" incrementBy="1" startWith="1">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+
+            <column name = "product_id" type="bigint(20)">
+                <constraints nullable="false"
+                             foreignKeyName="FK_Region_City"
+                             referencedTableName="Products" referencedColumnNames="id" deleteCascade="true"/>
+            </column>
+
+            <column name="active" type="boolean" defaultValueBoolean="false"/>
+
+        </createTable>
+    </changeSet>
+
+
+</databaseChangeLog>

@@ -13,9 +13,7 @@ public class ProductStatus implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-//    @OneToOne
-//    @JoinColumn(name="product_id")
-//    private Product productId;
+    @Column(name = "product_id")
     private Integer productId;
 
     private Boolean status;
@@ -25,7 +23,7 @@ public class ProductStatus implements Serializable {
 
 //TODO найти  анотацию значение по дефолту
     public ProductStatus(Integer productId) {
-//        this.productId = productId;
+        this.productId = productId;
         this.status = false;
     }
 

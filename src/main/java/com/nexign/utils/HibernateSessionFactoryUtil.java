@@ -1,11 +1,11 @@
 package com.nexign.utils;
 
-import com.nexign.dao.impl.ProductDaoImpl;
 import com.nexign.models.Product;
 import com.nexign.models.ProductStatus;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+
 
 public class HibernateSessionFactoryUtil {
 
@@ -19,7 +19,6 @@ public class HibernateSessionFactoryUtil {
                 Configuration configuration = new Configuration().configure();
                 configuration.addAnnotatedClass(Product.class);
                 configuration.addAnnotatedClass(ProductStatus.class);
-                configuration.addAnnotatedClass(ProductDaoImpl.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
                 sessionFactory = configuration.buildSessionFactory(builder.build());
 

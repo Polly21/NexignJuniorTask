@@ -6,48 +6,36 @@ import com.nexign.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 public class ProductController {
 
-//    @Autowired
-//    ProductRepository productRepository;
-//
     @Autowired
     ProductDaoImpl productDaoImpl;
 
-//    @Autowired
-//    MyService serv;
-//
-//    @GetMapping("/all")
-//    public void getlol() {
-//        System.out.println("hi");
-//        serv.findAll();
-//
-//    }
-
     // Get All Notes
-    @GetMapping("/notes")
-    public List<Product> getAllNotes() {
-//        return productRepository.findAll();
+    @GetMapping("/AllProducts")
+    public List<Product> getAllProducts() {
         return productDaoImpl.findAll();
-//        return serv.findAll();
+    }
+
+    @GetMapping("/SpecificProduct/{id}")
+    public List<Product> getSpecificProduct(@PathVariable(value = "id") Integer productId) {
+        return productDaoImpl.findById(productId);
+    }
+
+
+//
+    // Create a new Product
+    @PostMapping("/addProduct")
+    public Product createNote(@Valid @RequestBody Product product) {
+//        productDaoImpl.save(product);
+        return productDaoImpl.save(product);
     }
 //
-//    // Create a new Product
-//    @PostMapping("/notes")
-//    public Product createNote(@Valid @RequestBody Product product) {
-//        return productRepository.save(product);
-//    }
-//
-//    @GetMapping("/notes/{id}")
-//    public Product getNoteById(@PathVariable(value = "id") Integer productId) {
-//        return productRepository.findById(productId)
-//                .orElseThrow(() -> new FileSystemNotFoundException());
-////                .orElseThrow(() -> new ResourceNotFoundException("Product", "id", noteId));
-//    }
 //
 //    // Update a Product
 ////    @PutMapping("/notes/{id}")
