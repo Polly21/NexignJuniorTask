@@ -6,11 +6,12 @@ import com.nexign.models.ProductStatus;
 import com.nexign.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.exception.GenericJDBCException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("unchecked")
 @Repository
@@ -68,24 +69,37 @@ public class ProductDaoImpl implements ProductDao {
 //                .addEntity(Product.class).list();
 //    }
 
-    @Override
-    public Product save(Product product) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
-        try {
+//    @Override
+//    public Product save(Product product) {
+//        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+//        Transaction tx1 = session.beginTransaction();
+//        try {
+//
+//            session.save(product);
+////        TODO корректно ли?
+//            session.save(new ProductStatus(product.getId()));
+//            tx1.commit();
+//            session.close();
+//            return product;
+//        } catch (Exception ex) {
+//            tx1.rollback();
+//            ex.printStackTrace();
+//            session.close();
+//            return null;
+//        }
+//    }
 
+    @Transactional
+    public Product save(Product product) {
+        try(Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+//        Transaction tx1 = session.beginTransaction();
             session.save(product);
 //        TODO корректно ли?
             session.save(new ProductStatus(product.getId()));
-            tx1.commit();
-            session.close();
-            return product;
-        } catch (Exception ex) {
-            tx1.rollback();
-            ex.printStackTrace();
-            session.close();
+//            tx1.commit();
         }
-        return null;
+            return product;
+
     }
 
     @Override

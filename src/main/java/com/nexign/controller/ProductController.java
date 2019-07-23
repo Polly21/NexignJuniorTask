@@ -5,10 +5,13 @@ import com.nexign.Service.ProductService;
 import com.nexign.dao.ProductDao;
 import com.nexign.models.Product;
 import com.nexign.models.dto.ProductDto;
+import org.hibernate.exception.GenericJDBCException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.nio.file.FileSystemNotFoundException;
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -51,9 +54,9 @@ public class ProductController {
         return productService.save(product);
     }
 
-    @PostMapping("/updateProduct/{id}")
-    public Product updateProduct(@Valid @RequestBody Product product) {
-        return productService.save(product);
-    }
+//    @PostMapping("/updateProduct/{id}")
+//    public Product updateProduct(@Valid @RequestBody Product product) {
+//        return productService.save(product);
+//    }
 
 }

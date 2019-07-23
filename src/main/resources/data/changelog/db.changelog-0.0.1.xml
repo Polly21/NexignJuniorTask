@@ -40,11 +40,11 @@
 
 
 <!--mysql> DROP TABLE IF EXISTS databasechangelog, databasechangeloglock,products,productstatus;-->
-    <!--<changeSet author="ichigo" id="1">-->
-        <!--<sql>-->
-            <!--alter table userprefs add CHECK (fat+proteins+calorie &lt=100);-->
-        <!--</sql>-->
-    <!--</changeSet>-->
+    <changeSet author="Kirill" id="2">
+        <sql>
+            alter table products add CHECK (fat+proteins+carbohydrate &lt;=100);
+        </sql>
+    </changeSet>
 
 
     <changeSet id="3" author="Kirill">
@@ -60,7 +60,9 @@
                              referencedTableName="products" referencedColumnNames="id" deleteCascade="true"/>
             </column>
 
-            <column name="status" type="boolean" defaultValueBoolean="false"/>
+            <column name="status" type="boolean" defaultValueBoolean="false">
+                    <constraints nullable="false"/>
+            </column>
 
         </createTable>
     </changeSet>

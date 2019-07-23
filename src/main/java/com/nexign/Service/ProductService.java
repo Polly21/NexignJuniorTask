@@ -7,11 +7,13 @@ import com.nexign.models.Product;
 import com.nexign.models.ProductStatus;
 import com.nexign.models.dto.ProductDto;
 import info.debatty.java.stringsimilarity.Levenshtein;
+import org.hibernate.exception.GenericJDBCException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService implements ProductDao {
@@ -55,8 +57,7 @@ public class ProductService implements ProductDao {
 
     @Override
     public Product save(Product product) {
-        productDaoImpl.save(product);
-        return product;
+        return productDaoImpl.save(product);
     }
 
     @Override
