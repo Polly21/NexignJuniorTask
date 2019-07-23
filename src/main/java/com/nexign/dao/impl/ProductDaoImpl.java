@@ -23,15 +23,6 @@ public class ProductDaoImpl implements ProductDao {
     public ProductDaoImpl() {
     }
 
-
-//    @NamedNativeQueries({
-//            @NamedNativeQuery(
-//                    name = "findCompanyWithName",
-//                    query = "select * from Company where name like :name",
-//                    resultClass = Company.class
-//            )
-//    })
-
     @Override
     public List<Product> findAll() {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
@@ -59,6 +50,23 @@ public class ProductDaoImpl implements ProductDao {
                 .setParameter("id", id).list();
         return list;
     }
+
+    public List<Product> findByProductNameAndProducer(String productName, String producer) {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        String sql = "select p.* from Products as p, ProductStatus as ps where p.id = ps.product_id AND p.product_name = :productName AND p.producer = :producer AND ps.status = true";
+        return session.createNativeQuery(sql)
+                .addEntity(Product.class)
+                .setParameter("productName", productName)
+                .setParameter("producer", producer)
+                .list();
+    }
+
+//    public List findProductsByName(String name) {
+//        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+//        String sql = "select p.product_name, p.producer from Products as p, ProductStatus as ps where p.id = ps.product_id AND ps.status = true";
+//        return  session.createNativeQuery(sql)
+//                .addEntity(Product.class).list();
+//    }
 
     @Override
     public Product save(Product product) {

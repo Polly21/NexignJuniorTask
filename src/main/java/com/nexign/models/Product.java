@@ -10,14 +10,19 @@ import java.io.Serializable;
 //import java.io.Serializable;
 
 
-// CREATE TABLE products (id INT PRIMARY KEY AUTO_INCREMENT, producer VARCHAR(32) NOT NULL, calories DECIMAL(7,2), proteins DECIMAL(3,2) NOT NULL, fat DECIMAL(3,2), carbohydrate DECIMAL(3,2));
-//INSERT INTO products (producer,calories,carbohydrate,fat,proteins) values ("qwe",14.45,12.12,13.13,14.14);
+// CREATE TABLE products (id INT PRIMARY KEY AUTO_INCREMENT, product_name VARCHAR(32)  NOT NULL, producer VARCHAR(32) NOT NULL, calories DOUBLE(7,2) NOT NULL, proteins DOUBLE(5,2) DEFAULT 0, fat DOUBLE(5,2) DEFAULT 0, carbohydrate DOUBLE(5,2) DEFAULT 0, CHECK  (fat+carbohydrate+proteins<=100.00));
+// CREATE TABLE updates (id INT AUTO_INCREMENT, id_old_product INT NOT NULL, id_new_product INT NOT NULL);
+// CREATE TABLE new_inserts (id INT AUTO_INCREMENT, id_new_product INT NOT NULL)
+//INSERT INTO products (product_name,producer,calories,carbohydrate,fat,proteins) values ("Хлеб","Аленка",120,48,20,20),("Вода","Аленка",120,10,10,10),("Творог","Сибирский орех",555,38,50,5);
 @Entity
 @Table(name = "products")
 public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "product_name")
+    private String productName;
 
     private String producer;
 
@@ -76,5 +81,13 @@ public class Product implements Serializable {
 
     public void setCarbohydrate(Double carbohydrate) {
         this.carbohydrate = carbohydrate;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 }
