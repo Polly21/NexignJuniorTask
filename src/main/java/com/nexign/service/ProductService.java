@@ -1,19 +1,15 @@
-package com.nexign.Service;
+package com.nexign.service;
 
 import com.nexign.dao.ProductDao;
 import com.nexign.dao.impl.ProductDaoImpl;
-import com.nexign.dao.impl.StatusDaoImpl;
 import com.nexign.models.Product;
-import com.nexign.models.ProductStatus;
 import com.nexign.models.dto.ProductDto;
 import info.debatty.java.stringsimilarity.Levenshtein;
-import org.hibernate.exception.GenericJDBCException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService implements ProductDao {
@@ -61,8 +57,8 @@ public class ProductService implements ProductDao {
     }
 
     @Override
-    public void update(Product product) {
-
+    public Product update(Product product) {
+        return product;
     }
 
     @Override

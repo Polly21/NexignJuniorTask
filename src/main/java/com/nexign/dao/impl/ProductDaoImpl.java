@@ -45,7 +45,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public List findById(int id) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        String sql = "select p.* from Products as p, ProductStatus as ps where p.id = ps.product_id AND p.id = :id AND ps.status = true";
+        String sql = "select p.* from Products as p, ProductStatus as ps where p.id = ps.product_id AND p.id = :id AND ps.status = true ORDER BY id LIMIT 1";
         List<Object> list = session.createNativeQuery(sql)
                 .addEntity(Product.class)
                 .setParameter("id", id).list();
@@ -103,13 +103,15 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public void update(Product product) {
+    @Transactional
+    public Product update(Product product) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.update(product);
+//        Transaction tx1 = session.beginTransaction();
+        session.save(product);
         session.save(new ProductStatus(product.getId()));
-        tx1.commit();
+//        tx1.commit();
         session.close();
+        return product;
     }
 
     @Override

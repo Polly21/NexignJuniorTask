@@ -1,17 +1,12 @@
 package com.nexign.controller;
 
 
-import com.nexign.Service.ProductService;
-import com.nexign.dao.ProductDao;
+import com.nexign.service.ProductService;
 import com.nexign.models.Product;
-import com.nexign.models.dto.ProductDto;
-import org.hibernate.exception.GenericJDBCException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.nio.file.FileSystemNotFoundException;
-import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -21,28 +16,25 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
-//    @Autowired
-//    ProductDaoImpl productDaoImpl;
-
     // Get All Products
     @GetMapping("/AllProducts")
     public List<Product> getAllProducts() {
         return productService.findAll();
     }
 
-    // Get All Products by id
+    // Get Products by id
     @GetMapping("/SpecificProduct/{id}")
     public List<Product> getSpecificProduct(@PathVariable(value = "id") Integer productId) {
         return productService.findById(productId);
     }
 
-    // Get All Product by name and producer
+    // Get Product by name and producer
     @GetMapping("/SpecificProduct")
     public List<Product> getSpecificProductAsParams(@RequestParam (value = "name") String nameProduct, @RequestParam (value = "producer") String producer) {
         return productService.findByProductNameAndProducer(nameProduct,producer);
     }
 
-    // Get All Product by name
+    // Get Product by name
     @GetMapping("/SearchProductByName/{name}")
     public List getSpecificProduct(@PathVariable(value = "name") String nameProduct) {
         return  productService.findProductsByName(nameProduct);
@@ -54,9 +46,9 @@ public class ProductController {
         return productService.save(product);
     }
 
-//    @PostMapping("/updateProduct/{id}")
-//    public Product updateProduct(@Valid @RequestBody Product product) {
-//        return productService.save(product);
-//    }
+    @PostMapping("/updateProduct/{id}")
+    public Product updateProduct(@Valid @RequestBody Product product) {
+        return productService.update(product);
+    }
 
 }

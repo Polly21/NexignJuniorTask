@@ -39,7 +39,7 @@
     </changeSet>
 
 
-<!--mysql> DROP TABLE IF EXISTS databasechangelog, databasechangeloglock,products,productstatus;-->
+    <!--mysql> DROP TABLE IF EXISTS databasechangelog, databasechangeloglock,products,productstatus;-->
     <changeSet author="Kirill" id="2">
         <sql>
             alter table products add CHECK (fat+proteins+carbohydrate &lt;=100);
@@ -51,20 +51,63 @@
         <createTable tableName="productstatus">
 
             <column name="id" type="INT" autoIncrement="true" incrementBy="1" startWith="1">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name = "product_id" type="INT">
+            <column name="product_id" type="INT">
                 <constraints nullable="false"
                              foreignKeyName="FK_Region_City"
                              referencedTableName="products" referencedColumnNames="id" deleteCascade="true"/>
             </column>
 
+            <column name="old_product_id" type="INT">
+                <constraints nullable="true"
+                             foreignKeyName="FK_Region_City"
+                             referencedTableName="products" referencedColumnNames="id" deleteCascade="true"/>
+            </column>
+
             <column name="status" type="boolean" defaultValueBoolean="false">
-                    <constraints nullable="false"/>
+                <constraints nullable="false"/>
             </column>
 
         </createTable>
+    </changeSet>
+
+
+    <!--<changeSet id="3" author="Kirill">-->
+        <!--<createTable tableName="to_update_product">-->
+
+            <!--<column name="id" type="INT" autoIncrement="true" incrementBy="1" startWith="1">-->
+                <!--<constraints primaryKey="true" nullable="false"/>-->
+            <!--</column>-->
+
+            <!--<column name="old_product_id" type="INT">-->
+                <!--<constraints nullable="false"-->
+                             <!--foreignKeyName="FK_Region_City"-->
+                             <!--referencedTableName="products" referencedColumnNames="id" deleteCascade="true"/>-->
+            <!--</column>-->
+
+            <!--<column name="new_product_id" type="INT">-->
+                <!--<constraints nullable="false"-->
+                             <!--foreignKeyName="FK_Region_City"-->
+                             <!--referencedTableName="products" referencedColumnNames="id" deleteCascade="true"/>-->
+            <!--</column>-->
+
+            <!--<column name="status" type="boolean" defaultValueBoolean="false">-->
+                <!--<constraints nullable="false"/>-->
+            <!--</column>-->
+
+        <!--</createTable>-->
+    <!--</changeSet>-->
+
+
+    <changeSet id="4" author="Kirill">
+        <sql splitStatements="false">
+            CREATE OR REPLACE TRIGGER update_after AFTER UPDATE ON productstatus ;
+        </sql>
+        <rollback>
+            DROP TRIGGER add_current_date_to_my_table ON my_table;
+        </rollback>
     </changeSet>
 
 
