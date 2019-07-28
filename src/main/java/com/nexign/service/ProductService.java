@@ -1,33 +1,54 @@
 package com.nexign.service;
 
-import com.nexign.dao.ProductDao;
 import com.nexign.dao.impl.ProductDaoImpl;
 import com.nexign.models.Product;
+import com.nexign.models.ProductHistories;
 import com.nexign.models.dto.ProductDto;
+import com.nexign.models.dto.ProductInfoDto;
 import info.debatty.java.stringsimilarity.Levenshtein;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.LinkedList;
 import java.util.List;
 
 @Service
-public class ProductService implements ProductDao {
+public class ProductService {
 
     @Autowired
     ProductDaoImpl productDaoImpl;
+
+    public List findAll() {
+        return ProductInfoDto.fromList(productDaoImpl.findAll());
+    }
+
+    public Object findById(int id) {
+        return ProductInfoDto.createOneObject((Object[])productDaoImpl.findById(id));
+    }
+
+    public Object findByProductNameAndProducer(String productName, String producer) {
+        return ProductInfoDto.createOneObject((Object[])productDaoImpl.findByProductNameAndProducer(productName,producer));
+    }
+
 
     public List findProductsByName(String nameProduct) {
 
         Levenshtein l = new Levenshtein();
 
-        List<Product> list = productDaoImpl.findAll();
+        List<Object[]> list = productDaoImpl.findAll();
 
         List<ProductDto> newList = new LinkedList<>();
 
-        for(Product product : list) {
-            if(l.distance(product.getProductName(),nameProduct) <= nameProduct.length()/2 )  {
-                newList.add(ProductDto.fromEntity(product));
+        for(Object[] array : list) {
+
+            for(Object obj : array){
+                if(obj.getClass() != Product.class) {
+                    continue;
+                }
+
+                if(l.distance(((Product)obj).getProductName(),nameProduct) <= nameProduct.length()/2 )  {
+                    newList.add(ProductDto.fromEntity((Product) obj));
+                }
+
             }
         }
 
@@ -36,33 +57,20 @@ public class ProductService implements ProductDao {
     }
 
 
-    @Override
-    public List<Product> findAll() {
-        return productDaoImpl.findAll();
-    }
+    public Object save(ProductInfoDto productInfoDto) {
 
-    @Override
-    public List<Product> findById(int id) {
-        return productDaoImpl.findById(id);
-    }
-
-    @Override
-    public List<Product> findByProductNameAndProducer(String productName, String producer) {
-        return productDaoImpl.findByProductNameAndProducer(productName,producer);
-    }
-
-    @Override
-    public Product save(Product product) {
-        return productDaoImpl.save(product);
-    }
-
-    @Override
-    public Product update(Product product) {
-        return product;
-    }
-
-    @Override
-    public void delete(Product product) {
+        Product product = new Product(productInfoDto.getProductName(), productInfoDto.getProducer());
+        ProductHistories productHistories = new ProductHistories(product.getId(), productInfoDto.getCalories(), productInfoDto.getCarbohydrate(), productInfoDto.getFat(), productInfoDto.getProteins());
+        return productDaoImpl.save(product, productHistories);
 
     }
+
+
+    public ProductHistories update(Integer id, ProductHistories productHistories) {
+
+        return productDaoImpl.update(id,productHistories);
+//        return productDaoImpl.update( new ProductHistories(id,productInfoDto.getCalories(),productInfoDto.getCarbohydrate(),productInfoDto.getFat(),productInfoDto.getProteins()));
+
+    }
+
 }

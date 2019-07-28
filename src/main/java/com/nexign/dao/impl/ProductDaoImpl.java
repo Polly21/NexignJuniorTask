@@ -2,8 +2,10 @@ package com.nexign.dao.impl;
 
 import com.nexign.dao.ProductDao;
 import com.nexign.models.Product;
-import com.nexign.models.ProductStatus;
+import com.nexign.models.ProductHistories;
+import com.nexign.models.dto.ProductInfoDto;
 import com.nexign.utils.HibernateSessionFactoryUtil;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.GenericJDBCException;
@@ -18,109 +20,109 @@ import java.util.Optional;
 @Transactional
 public class ProductDaoImpl implements ProductDao {
 
-//    @Autowired
 //    private SessionFactory sessionFactory;
-
     public ProductDaoImpl() {
     }
 
     @Override
-    public List<Product> findAll() {
+    public List findAll() {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        String sql = "select p.* from Products as p, ProductStatus as ps where p.id = ps.product_id AND ps.status = true";
-        return session.createSQLQuery(sql).addEntity(Product.class).list();
+        String sql =
+                "SELECT * " +
+                        "from products p INNER JOIN products_hist ph ON ph.product_id = p.id " +
+                        "where p.is_visible = true " +
+                        "AND ph.product_id = p.id " +
+                        "AND ph.id IN (select MAX(id) from products_hist WHERE is_visible = true group by product_id )";
+        return session.createSQLQuery(sql).
+                        addEntity(Product.class)
+                        .addEntity(ProductHistories.class)
+                        .list();
     }
 
-////    TODO
-//    @Override
-//    public Product findById(int id) {
-//        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-//        String sql = "select p.* from Products as p, ProductStatus as ps where p.id = ps.product_id AND p.id = :id AND ps.status = true";
-//          List<Object> list = session.createNativeQuery(sql)
-//                .addEntity(Product.class)
-//                .setParameter("id", id).list();
-//        return (Product)list.get(0);
-//    }
 
     @Override
-    public List findById(int id) {
+    public Object findById(int id) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        String sql = "select p.* from Products as p, ProductStatus as ps where p.id = ps.product_id AND p.id = :id AND ps.status = true ORDER BY id LIMIT 1";
-        List<Object> list = session.createNativeQuery(sql)
-                .addEntity(Product.class)
-                .setParameter("id", id).list();
-        return list;
-    }
 
-    public List<Product> findByProductNameAndProducer(String productName, String producer) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        String sql = "select p.* from Products as p, ProductStatus as ps where p.id = ps.product_id AND p.product_name = :productName AND p.producer = :producer AND ps.status = true";
+        String sql = "select * from products p INNER JOIN products_hist ph ON ph.product_id = p.id " +
+                "WHERE p.is_visible = true " +
+                "AND p.id = :id " +
+                "AND ph.id IN (select MAX(id) from products_hist where is_visible = true group by product_id)";
         return session.createNativeQuery(sql)
                 .addEntity(Product.class)
+                .addEntity(ProductHistories.class)
+                .setParameter("id", id)
+                .uniqueResult();
+    }
+
+    public Object findByProductNameAndProducer(String productName, String producer) {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        String sql = "select * from products p INNER JOIN products_hist ph ON p.id = ph.product_id " +
+                "where p.is_visible = true " +
+                "AND p.product_name = :productName " +
+                "AND p.producer = :producer " +
+                "AND ph.id IN (select MAX(id) from products_hist where is_visible = true group by product_id )";
+        return session.createNativeQuery(sql)
+                .addEntity(Product.class)
+                .addEntity(ProductHistories.class)
                 .setParameter("productName", productName)
                 .setParameter("producer", producer)
-                .list();
-    }
-
-//    public List findProductsByName(String name) {
-//        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-//        String sql = "select p.product_name, p.producer from Products as p, ProductStatus as ps where p.id = ps.product_id AND ps.status = true";
-//        return  session.createNativeQuery(sql)
-//                .addEntity(Product.class).list();
-//    }
-
-//    @Override
-//    public Product save(Product product) {
-//        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-//        Transaction tx1 = session.beginTransaction();
-//        try {
-//
-//            session.save(product);
-////        TODO корректно ли?
-//            session.save(new ProductStatus(product.getId()));
-//            tx1.commit();
-//            session.close();
-//            return product;
-//        } catch (Exception ex) {
-//            tx1.rollback();
-//            ex.printStackTrace();
-//            session.close();
-//            return null;
-//        }
-//    }
-
-    @Transactional
-    public Product save(Product product) {
-        try(Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
-//        Transaction tx1 = session.beginTransaction();
-            session.save(product);
-//        TODO корректно ли?
-            session.save(new ProductStatus(product.getId()));
-//            tx1.commit();
-        }
-            return product;
-
+                .uniqueResult();
     }
 
     @Override
     @Transactional
-    public Product update(Product product) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-//        Transaction tx1 = session.beginTransaction();
-        session.save(product);
-        session.save(new ProductStatus(product.getId()));
-//        tx1.commit();
-        session.close();
-        return product;
-    }
+    public Object save(Product product, ProductHistories productHistories) {
 
-    @Override
-    public void delete(Product product) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction tx1 = session.beginTransaction();
-        session.delete(product);
-        tx1.commit();
-        session.close();
+        try {
+            session.save(product);
+//        TODO корректно ли?
+            productHistories.setProductId(product.getId());
+            session.save(productHistories);
+            tx1.commit();
+            session.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            tx1.rollback();
+            session.close();
+            return ExceptionUtils.getStackTrace(ex);
+        }
+        return product;
+
     }
+
+
+    @Override
+    public ProductHistories update(Integer id, ProductHistories productHistories) {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction tx1 = session.beginTransaction();
+
+        if(id != null) {
+            productHistories.setProductId(id);
+        }
+
+        try {
+            session.save(productHistories);
+            tx1.commit();
+            session.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            tx1.rollback();
+            session.close();
+        }
+
+        return productHistories;//findById(productHistories.getProductId());
+    }
+
+//    @Override
+//    public void delete(Product product) {
+//        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+//        Transaction tx1 = session.beginTransaction();
+//        session.delete(product);
+//        tx1.commit();
+//        session.close();
+//    }
 
 }

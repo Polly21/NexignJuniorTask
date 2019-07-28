@@ -7,7 +7,7 @@
     <session-factory>
         <!-- Настройки подключения к БД -->
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://localhost:3306/newTestBase</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/newtestbase?useLegacyDatetimeCode=false&amp;serverTimezone=UTC</property>
         <property name="connection.username">root</property>
         <property name="connection.password">root</property>
         <!--Пока пусть будет 1-->

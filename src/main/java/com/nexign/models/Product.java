@@ -1,13 +1,11 @@
 package com.nexign.models;
 
-
-//import org.hibernate.annotations.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
-//import javax.persistence.*;
-//import java.io.Serializable;
 
 
 // CREATE TABLE products (id INT PRIMARY KEY AUTO_INCREMENT, product_name VARCHAR(32)  NOT NULL, producer VARCHAR(32) NOT NULL, calories DOUBLE(7,2) NOT NULL, proteins DOUBLE(5,2) DEFAULT 0, fat DOUBLE(5,2) DEFAULT 0, carbohydrate DOUBLE(5,2) DEFAULT 0, CHECK  (fat+carbohydrate+proteins<=100.00));
@@ -26,21 +24,32 @@ public class Product implements Serializable {
 
     private String producer;
 
-    private Double calories;
+    @Column(name = "is_visible", insertable = false)
+    private Boolean isVisible;
 
-    private Double proteins;
-
-    private Double fat;
-
-    private Double carbohydrate;
-
-    // Getters and Setters ... (Omitted for brevity)
+    @Column(name = "create_date", insertable = false)
+    private Date createDate;
 
     public Product(){
     }
 
+    public Product(String productName, String producer) {
+
+        this.productName = productName;
+        this.producer = producer;
+
+    }
+
     public Integer getId() {
         return id;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public String getProducer() {
@@ -50,44 +59,20 @@ public class Product implements Serializable {
     public void setProducer(String producer) {
         this.producer = producer;
     }
-
-    public Double getCalories() {
-        return calories;
+    @JsonIgnore
+    public Boolean getVisible() {
+        return isVisible;
     }
 
-    public void setCalories(Double calories) {
-        this.calories = calories;
+    public void setVisible(Boolean visible) {
+        isVisible = visible;
+    }
+    @JsonIgnore
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public Double getProteins() {
-        return proteins;
-    }
-
-    public void setProteins(Double proteins) {
-        this.proteins = proteins;
-    }
-
-    public Double getFat() {
-        return fat;
-    }
-
-    public void setFat(Double fat) {
-        this.fat = fat;
-    }
-
-    public Double getCarbohydrate() {
-        return carbohydrate;
-    }
-
-    public void setCarbohydrate(Double carbohydrate) {
-        this.carbohydrate = carbohydrate;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 }
