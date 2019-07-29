@@ -1,6 +1,8 @@
 package com.nexign.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,6 +10,8 @@ import java.util.Date;
 
 @Entity
 @Table(name = "products_hist")
+@Getter
+@Setter
 public class ProductHistories implements Serializable {
 
     @Id
@@ -45,57 +49,9 @@ public class ProductHistories implements Serializable {
 
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public Integer getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
-
-    public Double getCalories() {
-        return calories;
-    }
-
-    public void setCalories(Double calories) {
-        this.calories = calories;
-    }
-
-    public Double getProteins() {
-        return proteins;
-    }
-
-    public void setProteins(Double proteins) {
-        this.proteins = proteins;
-    }
-
-    public Double getFat() {
-        return fat;
-    }
-
-    public void setFat(Double fat) {
-        this.fat = fat;
-    }
-
-    public Double getCarbohydrate() {
-        return carbohydrate;
-    }
-
-    public void setCarbohydrate(Double carbohydrate) {
-        this.carbohydrate = carbohydrate;
-    }
-
     @JsonIgnore
     public Boolean getIsVisible() {
         return isVisible;
-    }
-
-    public void setIsVisible(Boolean isVisible) {
-        this.isVisible = isVisible;
     }
 
     @JsonIgnore
@@ -103,7 +59,4 @@ public class ProductHistories implements Serializable {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
 }

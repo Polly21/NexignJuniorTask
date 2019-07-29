@@ -1,6 +1,8 @@
 package com.nexign.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,15 +10,18 @@ import java.util.Date;
 
 @Entity
 @Table(name = "products")
+@Getter
+@Setter
 public class Product implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "product_name")
+    @Column(name = "product_name", nullable = false)
     private String productName;
 
+    @Column(nullable = false)
     private String producer;
 
     @Column(name = "is_visible", insertable = false)
@@ -36,33 +41,9 @@ public class Product implements Serializable {
 
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getProducer() {
-        return producer;
-    }
-
-    public void setProducer(String producer) {
-        this.producer = producer;
-    }
-
     @JsonIgnore
     public Boolean getVisible() {
         return isVisible;
-    }
-
-    public void setVisible(Boolean visible) {
-        isVisible = visible;
     }
 
     @JsonIgnore
@@ -70,7 +51,4 @@ public class Product implements Serializable {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
 }

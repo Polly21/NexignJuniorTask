@@ -5,67 +5,85 @@ import com.nexign.models.Product;
 import com.nexign.models.ProductHistories;
 import com.nexign.models.dto.ProductDto;
 import com.nexign.models.dto.ProductInfoDto;
+import com.nexign.utils.ConvertersToDto;
 import info.debatty.java.stringsimilarity.Levenshtein;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
 
 @Service
+@Transactional
 public class ProductService {
 
     @Autowired
     ProductDaoImpl productDaoImpl;
 
-    public List findAll() {
-        return ProductInfoDto.fromList(productDaoImpl.findAll());
+    public ResponseEntity<List<ProductInfoDto>> findAll() {
+        List<ProductInfoDto> list = ConvertersToDto.createListProductInfoDto(productDaoImpl.findAll());
+
+        if(list.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    public ProductInfoDto findById(int id) {
-        return ProductInfoDto.createOneObject((Object[]) productDaoImpl.findById(id));
+    public ResponseEntity<ProductInfoDto> findById(int id) {
+        ProductInfoDto productInfoDto = ConvertersToDto.createProductInfoDtoFromObject((Object[]) productDaoImpl.findById(id));
+
+        if(productInfoDto == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(productInfoDto, HttpStatus.OK);
     }
 
-    public ProductInfoDto findByProductNameAndProducer(String productName, String producer) {
-        return ProductInfoDto.createOneObject((Object[]) productDaoImpl.findByProductNameAndProducer(productName, producer));
+    public ResponseEntity<ProductInfoDto> findByProductNameAndProducer(String productName, String producer) {
+        ProductInfoDto productInfoDto = ConvertersToDto.createProductInfoDtoFromObject((Object[]) productDaoImpl.findByProductNameAndProducer(productName, producer));
+        if (productInfoDto == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(productInfoDto,HttpStatus.OK);
     }
 
-    public List<ProductDto> findProductsByName(String nameProduct) {
-
+    public ResponseEntity<List<ProductDto>> findProductsByName(String nameProduct) {
         Levenshtein l = new Levenshtein();
+        List<ProductDto> newList = new LinkedList<>();
 
         List<Object[]> list = productDaoImpl.findAll();
 
-        List<ProductDto> newList = new LinkedList<>();
-
         for (Object[] array : list) {
-
             for (Object obj : array) {
                 if (obj.getClass() != Product.class) {
                     continue;
                 }
 
                 if (l.distance(((Product) obj).getProductName(), nameProduct) <= nameProduct.length() / 2) {
-                    newList.add(ProductDto.fromEntity((Product) obj));
+                    newList.add(ConvertersToDto.createProductDtoFromProduct((Product) obj));
                 }
-
             }
         }
-
-        return newList;
-
+        if(newList == null || newList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(newList,HttpStatus.OK);
     }
 
-    public Product save(ProductInfoDto productInfoDto) {
-
+    public ResponseEntity<Product> save(ProductInfoDto productInfoDto) {
         Product product = new Product(productInfoDto.getProductName(), productInfoDto.getProducer());
         ProductHistories productHistories = new ProductHistories(product.getId(), productInfoDto.getCalories(), productInfoDto.getCarbohydrate(), productInfoDto.getFat(), productInfoDto.getProteins());
-        return productDaoImpl.save(product, productHistories);
+        return new ResponseEntity<>(productDaoImpl.save(product, productHistories),HttpStatus.OK);
 
     }
 
-    public ProductHistories update(Integer id, ProductHistories productHistories) {
-        return productDaoImpl.update(id, productHistories);
+    public ResponseEntity<ProductHistories> update(Integer id, ProductHistories productHistories) {
+        if (id != null) {
+            productHistories.setProductId(id);
+        }
+        return new ResponseEntity<>(productDaoImpl.update(id, productHistories),HttpStatus.OK);
     }
 
 }

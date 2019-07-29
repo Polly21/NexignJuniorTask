@@ -2,9 +2,15 @@ package com.nexign.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nexign.models.Product;
+import lombok.Getter;
+import lombok.Setter;
 
+/**
+ * Класс для возварата производителя и наименование продукта
+ */
 
-/*Класс для возварата производителя и наименование продукта*/
+@Getter
+@Setter
 public class ProductDto {
 
     @JsonProperty("producer")
@@ -13,30 +19,4 @@ public class ProductDto {
     @JsonProperty("productName")
     private String productName;
 
-
-    public ProductDto() {
-    }
-
-    public static ProductDto fromEntity(Product product) {
-        ProductDto dto = new ProductDto();
-        dto.setProducer(product.getProducer());
-        dto.setProductName(product.getProductName());
-        return dto;
-    }
-
-    public String getProducer() {
-        return producer;
-    }
-
-    public void setProducer(String producer) {
-        this.producer = producer;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
 }

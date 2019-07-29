@@ -7,13 +7,13 @@ import com.nexign.models.dto.ProductDto;
 import java.util.List;
 
 public interface ProductDao {
-    public List findAll();
+    List findAll();
 
-    public Object findById(int id);
+    Object findById(int id);
 
-    public Object findByProductNameAndProducer(String productName, String producer);
+    Object findByProductNameAndProducer(String productName, String producer);
 
-    public Product save(Product product, ProductHistories productHistories);
+    Product save(Product product, ProductHistories productHistories);
 
-    public ProductHistories update(Integer id, ProductHistories productHistories);
+    ProductHistories update(Integer id, ProductHistories productHistories);
 }
