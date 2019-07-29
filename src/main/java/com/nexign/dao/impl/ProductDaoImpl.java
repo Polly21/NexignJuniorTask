@@ -6,9 +6,13 @@ import com.nexign.models.ProductHistories;
 import com.nexign.utils.HibernateSessionFactoryUtil;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 
@@ -17,12 +21,19 @@ import java.util.List;
 @Transactional
 public class ProductDaoImpl implements ProductDao {
 
+    @Autowired
+    SessionFactory sessionFactory;
+
+    EntityManagerFactory entityManagerFactory
+
     public ProductDaoImpl() {
     }
 
     @Override
     public List findAll() {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+//        entityManagerFactory.getCriteriaBuilder().
+//        Session session = sessionFactory.openSession();
         String sql =
                 "SELECT * " +
                         "from products p INNER JOIN products_hist ph ON ph.product_id = p.id " +
@@ -37,7 +48,8 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public Object findById(int id) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+//        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
 
         String sql = "select * from products p INNER JOIN products_hist ph ON ph.product_id = p.id " +
                 "WHERE p.is_visible = true " +
@@ -67,23 +79,15 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     @Transactional
-    public Object save(Product product, ProductHistories productHistories) {
+    public Product save(Product product, ProductHistories productHistories) {
 
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
-        try {
-            session.save(product);
+
+        session.save(product);
 //        TODO корректно ли?
-            productHistories.setProductId(product.getId());
-            session.save(productHistories);
-            tx1.commit();
-            session.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            tx1.rollback();
-            session.close();
-            return ExceptionUtils.getStackTrace(ex);
-        }
+        productHistories.setProductId(product.getId());
+        session.save(productHistories);
+        session.close();
         return product;
 
     }

@@ -22,15 +22,15 @@ public class ProductService {
         return ProductInfoDto.fromList(productDaoImpl.findAll());
     }
 
-    public Object findById(int id) {
+    public ProductInfoDto findById(int id) {
         return ProductInfoDto.createOneObject((Object[]) productDaoImpl.findById(id));
     }
 
-    public Object findByProductNameAndProducer(String productName, String producer) {
+    public ProductInfoDto findByProductNameAndProducer(String productName, String producer) {
         return ProductInfoDto.createOneObject((Object[]) productDaoImpl.findByProductNameAndProducer(productName, producer));
     }
 
-    public List findProductsByName(String nameProduct) {
+    public List<ProductDto> findProductsByName(String nameProduct) {
 
         Levenshtein l = new Levenshtein();
 
@@ -56,7 +56,7 @@ public class ProductService {
 
     }
 
-    public Object save(ProductInfoDto productInfoDto) {
+    public Product save(ProductInfoDto productInfoDto) {
 
         Product product = new Product(productInfoDto.getProductName(), productInfoDto.getProducer());
         ProductHistories productHistories = new ProductHistories(product.getId(), productInfoDto.getCalories(), productInfoDto.getCarbohydrate(), productInfoDto.getFat(), productInfoDto.getProteins());

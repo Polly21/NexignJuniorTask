@@ -13,16 +13,22 @@ public class ProductInfoDto implements Serializable {
 
     @JsonProperty("productName")
     private String productName;
+
     @JsonProperty("producer")
     private String producer;
+
     @JsonProperty("calories")
     private Double calories;
+
     @JsonProperty("proteins")
     private Double proteins;
+
     @JsonProperty("fat")
     private Double fat;
+
     @JsonProperty("carbohydrate")
     private Double carbohydrate;
+
 
     public static List<ProductInfoDto> fromList(List<Object[]> list) {
         List<ProductInfoDto> dtolist = new LinkedList<>();
@@ -53,7 +59,6 @@ public class ProductInfoDto implements Serializable {
 
         return dto;
     }
-
 
     public String getProductName() {
         return productName;

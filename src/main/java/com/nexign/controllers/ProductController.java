@@ -1,6 +1,8 @@
 package com.nexign.controllers;
 
 
+import com.nexign.dao.MyRepos;
+import com.nexign.models.Product;
 import com.nexign.models.ProductHistories;
 import com.nexign.models.dto.ProductInfoDto;
 import com.nexign.services.ProductService;
@@ -17,7 +19,12 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
-    // Get All Products
+    @Autowired
+    MyRepos repos;
+
+    /**
+     * Получение всех продуктов
+     */
     @GetMapping("/AllProducts")
     public List getAllProducts() {
         return productService.findAll();
@@ -25,13 +32,13 @@ public class ProductController {
 
     // Get Products by id
     @GetMapping("/SpecificProduct/{id}")
-    public Object getSpecificProduct(@PathVariable(value = "id") Integer productId) {
+    public ProductInfoDto getSpecificProduct(@PathVariable(value = "id") Integer productId) {
         return productService.findById(productId);
     }
 
     // Get Product by name and producer
     @GetMapping("/SpecificProduct")
-    public Object getSpecificProductAsParams(@RequestParam(value = "name") String nameProduct, @RequestParam(value = "producer") String producer) {
+    public ProductInfoDto getSpecificProductAsParams(@RequestParam(value = "name") String nameProduct, @RequestParam(value = "producer") String producer) {
         return productService.findByProductNameAndProducer(nameProduct, producer);
     }
 
@@ -43,7 +50,7 @@ public class ProductController {
 
     // Create a new Product
     @PostMapping("/addProduct")
-    public Object createProduct(@Valid @RequestBody ProductInfoDto productInfoDto) {
+    public Product createProduct(@Valid @RequestBody ProductInfoDto productInfoDto) {
         return productService.save(productInfoDto);
     }
 

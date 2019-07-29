@@ -3,13 +3,16 @@ package com.nexign.models.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nexign.models.Product;
 
+
 /*Класс для возварата производителя и наименование продукта*/
 public class ProductDto {
 
     @JsonProperty("producer")
     private String producer;
+
     @JsonProperty("productName")
     private String productName;
+
 
     public ProductDto() {
     }

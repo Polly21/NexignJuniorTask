@@ -20,7 +20,6 @@ public class HibernateSessionFactoryUtil {
             try {
                 Configuration configuration = new Configuration().configure();
                 configuration.addAnnotatedClass(Product.class);
-//                configuration.addAnnotatedClass(ProductStatus.class);
                 configuration.addAnnotatedClass(ProductHistories.class);
                 configuration.addAnnotatedClass(ProductInfoDto.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());

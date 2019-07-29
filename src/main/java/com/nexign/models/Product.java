@@ -9,6 +9,7 @@ import java.util.Date;
 @Entity
 @Table(name = "products")
 public class Product implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -23,6 +24,7 @@ public class Product implements Serializable {
 
     @Column(name = "create_date", insertable = false)
     private Date createDate;
+
 
     public Product() {
     }
