@@ -3,24 +3,20 @@ package com.nexign.dao.impl;
 import com.nexign.dao.ProductDao;
 import com.nexign.models.Product;
 import com.nexign.models.ProductHistories;
-import com.nexign.models.dto.ProductInfoDto;
 import com.nexign.utils.HibernateSessionFactoryUtil;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.exception.GenericJDBCException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-import java.util.Optional;
+
 
 @SuppressWarnings("unchecked")
 @Repository
 @Transactional
 public class ProductDaoImpl implements ProductDao {
 
-//    private SessionFactory sessionFactory;
     public ProductDaoImpl() {
     }
 
@@ -33,12 +29,11 @@ public class ProductDaoImpl implements ProductDao {
                         "where p.is_visible = true " +
                         "AND ph.product_id = p.id " +
                         "AND ph.id IN (select MAX(id) from products_hist WHERE is_visible = true group by product_id )";
-        return session.createSQLQuery(sql).
-                        addEntity(Product.class)
-                        .addEntity(ProductHistories.class)
-                        .list();
+        return session.createSQLQuery(sql)
+                .addEntity(Product.class)
+                .addEntity(ProductHistories.class)
+                .list();
     }
-
 
     @Override
     public Object findById(int id) {
@@ -93,13 +88,12 @@ public class ProductDaoImpl implements ProductDao {
 
     }
 
-
     @Override
     public ProductHistories update(Integer id, ProductHistories productHistories) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction tx1 = session.beginTransaction();
 
-        if(id != null) {
+        if (id != null) {
             productHistories.setProductId(id);
         }
 
@@ -115,14 +109,5 @@ public class ProductDaoImpl implements ProductDao {
 
         return productHistories;//findById(productHistories.getProductId());
     }
-
-//    @Override
-//    public void delete(Product product) {
-//        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-//        Transaction tx1 = session.beginTransaction();
-//        session.delete(product);
-//        tx1.commit();
-//        session.close();
-//    }
 
 }

@@ -1,11 +1,7 @@
 package com.nexign.models.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nexign.models.Product;
-
-import java.util.List;
-
 
 /*Класс для возварата производителя и наименование продукта*/
 public class ProductDto {
@@ -18,7 +14,6 @@ public class ProductDto {
     public ProductDto() {
     }
 
-    // you can do any transforamtion/validation here
     public static ProductDto fromEntity(Product product) {
         ProductDto dto = new ProductDto();
         dto.setProducer(product.getProducer());

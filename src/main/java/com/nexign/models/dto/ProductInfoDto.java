@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nexign.models.Product;
 import com.nexign.models.ProductHistories;
 
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,9 +25,9 @@ public class ProductInfoDto implements Serializable {
     private Double carbohydrate;
 
     public static List<ProductInfoDto> fromList(List<Object[]> list) {
-        List <ProductInfoDto> dtolist = new LinkedList<>();
+        List<ProductInfoDto> dtolist = new LinkedList<>();
 
-        for (Object[] obj: list) {
+        for (Object[] obj : list) {
 
             dtolist.add(createOneObject(obj));
 
@@ -40,19 +37,19 @@ public class ProductInfoDto implements Serializable {
 
     public static ProductInfoDto createOneObject(Object[] array) {
 
-            ProductInfoDto dto = new ProductInfoDto();
+        ProductInfoDto dto = new ProductInfoDto();
 
-            for(int i = 0; i < array.length; i++) {
-                if(array[i].getClass() == Product.class) {
-                    dto.setProductName(((Product)array[i]).getProductName());
-                    dto.setProducer(((Product)array[i]).getProducer());
-                } else {
-                    dto.setCalories(((ProductHistories)array[i]).getCalories());
-                    dto.setFat(((ProductHistories)array[i]).getFat());
-                    dto.setCarbohydrate(((ProductHistories)array[i]).getCarbohydrate());
-                    dto.setProteins(((ProductHistories)array[i]).getProteins());
-                }
+        for (int i = 0; i < array.length; i++) {
+            if (array[i].getClass() == Product.class) {
+                dto.setProductName(((Product) array[i]).getProductName());
+                dto.setProducer(((Product) array[i]).getProducer());
+            } else {
+                dto.setCalories(((ProductHistories) array[i]).getCalories());
+                dto.setFat(((ProductHistories) array[i]).getFat());
+                dto.setCarbohydrate(((ProductHistories) array[i]).getCarbohydrate());
+                dto.setProteins(((ProductHistories) array[i]).getProteins());
             }
+        }
 
         return dto;
     }
@@ -105,7 +102,6 @@ public class ProductInfoDto implements Serializable {
     public void setCarbohydrate(Double carbohydrate) {
         this.carbohydrate = carbohydrate;
     }
-
 
 
 }

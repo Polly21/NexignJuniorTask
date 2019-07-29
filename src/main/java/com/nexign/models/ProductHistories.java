@@ -1,10 +1,6 @@
 package com.nexign.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.deser.std.DateDeserializers;
-import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -32,9 +28,9 @@ public class ProductHistories implements Serializable {
     @Column(name = "is_visible", insertable = false)
     private Boolean isVisible;
 
-
     @Column(name = "update_date", insertable = false)
     private Date updateDate;
+
 
     public ProductHistories() {
     }
@@ -92,6 +88,7 @@ public class ProductHistories implements Serializable {
     public void setCarbohydrate(Double carbohydrate) {
         this.carbohydrate = carbohydrate;
     }
+
     @JsonIgnore
     public Boolean getIsVisible() {
         return isVisible;
@@ -100,6 +97,7 @@ public class ProductHistories implements Serializable {
     public void setIsVisible(Boolean isVisible) {
         this.isVisible = isVisible;
     }
+
     @JsonIgnore
     public Date getUpdateDate() {
         return updateDate;

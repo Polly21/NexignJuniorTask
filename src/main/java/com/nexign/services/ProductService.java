@@ -1,4 +1,4 @@
-package com.nexign.service;
+package com.nexign.services;
 
 import com.nexign.dao.impl.ProductDaoImpl;
 import com.nexign.models.Product;
@@ -8,6 +8,7 @@ import com.nexign.models.dto.ProductInfoDto;
 import info.debatty.java.stringsimilarity.Levenshtein;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,13 +23,12 @@ public class ProductService {
     }
 
     public Object findById(int id) {
-        return ProductInfoDto.createOneObject((Object[])productDaoImpl.findById(id));
+        return ProductInfoDto.createOneObject((Object[]) productDaoImpl.findById(id));
     }
 
     public Object findByProductNameAndProducer(String productName, String producer) {
-        return ProductInfoDto.createOneObject((Object[])productDaoImpl.findByProductNameAndProducer(productName,producer));
+        return ProductInfoDto.createOneObject((Object[]) productDaoImpl.findByProductNameAndProducer(productName, producer));
     }
-
 
     public List findProductsByName(String nameProduct) {
 
@@ -38,14 +38,14 @@ public class ProductService {
 
         List<ProductDto> newList = new LinkedList<>();
 
-        for(Object[] array : list) {
+        for (Object[] array : list) {
 
-            for(Object obj : array){
-                if(obj.getClass() != Product.class) {
+            for (Object obj : array) {
+                if (obj.getClass() != Product.class) {
                     continue;
                 }
 
-                if(l.distance(((Product)obj).getProductName(),nameProduct) <= nameProduct.length()/2 )  {
+                if (l.distance(((Product) obj).getProductName(), nameProduct) <= nameProduct.length() / 2) {
                     newList.add(ProductDto.fromEntity((Product) obj));
                 }
 
@@ -56,7 +56,6 @@ public class ProductService {
 
     }
 
-
     public Object save(ProductInfoDto productInfoDto) {
 
         Product product = new Product(productInfoDto.getProductName(), productInfoDto.getProducer());
@@ -65,12 +64,8 @@ public class ProductService {
 
     }
 
-
     public ProductHistories update(Integer id, ProductHistories productHistories) {
-
-        return productDaoImpl.update(id,productHistories);
-//        return productDaoImpl.update( new ProductHistories(id,productInfoDto.getCalories(),productInfoDto.getCarbohydrate(),productInfoDto.getFat(),productInfoDto.getProteins()));
-
+        return productDaoImpl.update(id, productHistories);
     }
 
 }
