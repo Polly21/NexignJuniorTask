@@ -40,13 +40,11 @@ public class ProductHistories implements Serializable {
     }
 
     public ProductHistories(Integer productId, Double calories, Double carbohydrate, Double fat, Double proteins) {
-
         this.productId = productId;
         this.calories = calories;
         this.carbohydrate = carbohydrate;
         this.fat = fat;
         this.proteins = proteins;
-
     }
 
     @JsonIgnore

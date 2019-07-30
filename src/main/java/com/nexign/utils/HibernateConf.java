@@ -1,6 +1,7 @@
 package com.nexign.utils;
 
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
+import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -37,7 +38,6 @@ public class HibernateConf {
         return dataSource;
     }
 
-
     @Bean
     public PlatformTransactionManager hibernateTransactionManager() {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();
@@ -52,7 +52,7 @@ public class HibernateConf {
         hibernateProperties.setProperty(
                 "hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
         hibernateProperties.setProperty(
-                "show-sql", "true");
+                "show_sql", "true");
         return hibernateProperties;
     }
 }

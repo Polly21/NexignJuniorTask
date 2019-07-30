@@ -23,6 +23,7 @@ public class ProductService {
     @Autowired
     ProductDaoImpl productDaoImpl;
 
+    @Transactional
     public ResponseEntity<List<ProductInfoDto>> findAll() {
         List<ProductInfoDto> list = ConvertersToDto.createListProductInfoDto(productDaoImpl.findAll());
 
@@ -32,6 +33,7 @@ public class ProductService {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    @Transactional
     public ResponseEntity<ProductInfoDto> findById(int id) {
         ProductInfoDto productInfoDto = ConvertersToDto.createProductInfoDtoFromObject((Object[]) productDaoImpl.findById(id));
 
@@ -41,6 +43,7 @@ public class ProductService {
         return new ResponseEntity<>(productInfoDto, HttpStatus.OK);
     }
 
+    @Transactional
     public ResponseEntity<ProductInfoDto> findByProductNameAndProducer(String productName, String producer) {
         ProductInfoDto productInfoDto = ConvertersToDto.createProductInfoDtoFromObject((Object[]) productDaoImpl.findByProductNameAndProducer(productName, producer));
         if (productInfoDto == null) {
@@ -49,6 +52,7 @@ public class ProductService {
         return new ResponseEntity<>(productInfoDto,HttpStatus.OK);
     }
 
+    @Transactional
     public ResponseEntity<List<ProductDto>> findProductsByName(String nameProduct) {
         Levenshtein l = new Levenshtein();
         List<ProductDto> newList = new LinkedList<>();
@@ -72,6 +76,7 @@ public class ProductService {
         return new ResponseEntity<>(newList,HttpStatus.OK);
     }
 
+    @Transactional
     public ResponseEntity<Product> save(ProductInfoDto productInfoDto) {
         Product product = new Product(productInfoDto.getProductName(), productInfoDto.getProducer());
         ProductHistories productHistories = new ProductHistories(product.getId(), productInfoDto.getCalories(), productInfoDto.getCarbohydrate(), productInfoDto.getFat(), productInfoDto.getProteins());
@@ -79,6 +84,7 @@ public class ProductService {
 
     }
 
+    @Transactional
     public ResponseEntity<ProductHistories> update(Integer id, ProductHistories productHistories) {
         if (id != null) {
             productHistories.setProductId(id);

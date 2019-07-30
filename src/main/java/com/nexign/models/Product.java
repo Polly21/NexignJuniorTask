@@ -35,10 +35,8 @@ public class Product implements Serializable {
     }
 
     public Product(String productName, String producer) {
-
         this.productName = productName;
         this.producer = producer;
-
     }
 
     @JsonIgnore

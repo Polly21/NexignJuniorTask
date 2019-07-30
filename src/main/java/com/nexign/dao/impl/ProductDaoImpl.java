@@ -26,6 +26,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
+    @Transactional
     public List findAll() {
         Session session = sessionFactory.openSession();
         String sql =
@@ -41,6 +42,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
+    @Transactional
     public Object findById(int id) {
         Session session = sessionFactory.openSession();
         String sql = "select * from products p INNER JOIN products_hist ph ON ph.product_id = p.id " +
@@ -55,6 +57,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
+    @Transactional
     public Object findByProductNameAndProducer(String productName, String producer) {
         Session session = sessionFactory.openSession();
         String sql = "select * from products p INNER JOIN products_hist ph ON p.id = ph.product_id " +
@@ -73,19 +76,20 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     @Transactional
     public Product save(Product product, ProductHistories productHistories) {
-        Session session = sessionFactory.openSession();
-        session.save(product);
-        productHistories.setProductId(product.getId());
-        session.save(productHistories);
-        session.close();
-        return product;
+            Session session = sessionFactory.openSession();
+            session.save(product);
+            productHistories.setProductId(product.getId());
+            session.save(productHistories);
+            session.disconnect();
+            return product;
     }
 
     @Override
+    @Transactional
     public ProductHistories update(Integer id, ProductHistories productHistories) {
         Session session = sessionFactory.openSession();
         session.save(productHistories);
-        session.close();
+        session.disconnect();
         return productHistories;
     }
 
