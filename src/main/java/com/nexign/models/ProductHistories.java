@@ -18,8 +18,12 @@ public class ProductHistories implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "product_id")
-    private Integer productId;
+//    @Column(name = "product_id")
+//private Integer productId;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id")
+    private Product productId;
 
     private Double calories;
 
@@ -39,12 +43,17 @@ public class ProductHistories implements Serializable {
     public ProductHistories() {
     }
 
-    public ProductHistories(Integer productId, Double calories, Double carbohydrate, Double fat, Double proteins) {
-        this.productId = productId;
-        this.calories = calories;
-        this.carbohydrate = carbohydrate;
-        this.fat = fat;
-        this.proteins = proteins;
+//    public ProductHistories(Integer productId, Double calories, Double carbohydrate, Double fat, Double proteins) {
+//        this.productId = productId;
+//        this.calories = calories;
+//        this.carbohydrate = carbohydrate;
+//        this.fat = fat;
+//        this.proteins = proteins;
+//    }
+
+    @JsonIgnore
+    public Product getProductId() {
+        return productId;
     }
 
     @JsonIgnore

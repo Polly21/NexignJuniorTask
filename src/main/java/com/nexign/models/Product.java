@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -29,6 +30,10 @@ public class Product implements Serializable {
 
     @Column(name = "create_date", insertable = false)
     private Date createDate;
+
+    @OneToMany(mappedBy = "productId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductHistories> productHistoriesList;
+
 
 
     public Product() {
