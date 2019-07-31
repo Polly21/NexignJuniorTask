@@ -28,9 +28,15 @@ public class ProductService {
 
     @Transactional
     public Product findById(int id) {
-        return respository.findById(id).orElseThrow(() -> new NullPointerException() );
+        return respository.findById(id)
+                .orElseThrow(() -> new NullPointerException() );
     }
 
+        @Transactional
+    public Product findByProductNameAndProducer(String productName, String producer) {
+        return respository.findByProductNameAndProducer(productName, producer)
+                .orElseThrow(() -> new NullPointerException());
+    }
 
 
 //        @Transactional

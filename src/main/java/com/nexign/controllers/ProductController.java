@@ -42,14 +42,14 @@ public class ProductController {
 //        return productService.findById(productId);
         return productService.findById(productId);
     }
-//
-//    /**
-//     * Get Product by name and producer
-//     */
-//    @GetMapping("/SpecificProduct")
-//    public ResponseEntity<ProductInfoDto> getSpecificProductAsParams(@RequestParam(value = "name") String nameProduct, @RequestParam(value = "producer") String producer) {
-//        return productService.findByProductNameAndProducer(nameProduct, producer);
-//    }
+
+    /**
+     * Get Product by name and producer
+     */
+    @GetMapping("/SpecificProduct")
+    public Product getSpecificProductAsParams(@RequestParam(value = "name") String nameProduct, @RequestParam(value = "producer") String producer) {
+        return productService.findByProductNameAndProducer(nameProduct, producer);
+    }
 //
 //    /**
 //     * Get Product by name
