@@ -15,13 +15,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Optional<Product> findByIdAndIsVisible(Integer id, Boolean isVisible);
 
     @Override
-//     @Query("SELECT p FROM Product p JOIN FETCH p.productHistoriesList ph " +
-//             "WHERE p.id = ?1 " +
-//             "AND p.isVisible = true " +
-//             "AND ph.id IN (select MAX(id) from ProductHistories WHERE isVisible = true group by productId)")
-    @Query("SELECT p FROM Product p JOIN FETCH p.productHistoriesList ph " +
-            "WHERE p.isVisible = true " +
-            "AND ph.id IN (select MAX(id) from ProductHistories WHERE isVisible = true group by productId)")
+     @Query("SELECT p FROM Product p JOIN FETCH p.productHistoriesList ph " +
+             "WHERE p.id = ?1 " +
+             "AND p.isVisible = true " +
+             "AND ph.id IN (select MAX(id) from ProductHistories WHERE isVisible = true group by productId)")
     Optional<Product> findById(Integer id);
 
     @Query("SELECT p FROM Product p JOIN FETCH p.productHistoriesList ph " +

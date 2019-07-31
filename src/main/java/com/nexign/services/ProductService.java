@@ -28,7 +28,7 @@ public class ProductService {
 
     @Transactional
     public Product findById(int id) {
-        return respository.findByIdAndIsVisible(id,true).orElseThrow(() -> new NullPointerException() );
+        return respository.findById(id).orElseThrow(() -> new NullPointerException() );
     }
 
 
