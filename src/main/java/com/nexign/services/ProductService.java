@@ -1,6 +1,6 @@
 package com.nexign.services;
 
-import com.nexign.dao.ProductRespository;
+import com.nexign.dao.ProductRepository;
 import com.nexign.models.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,26 +12,23 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class ProductService {
 
     @Autowired
-    ProductRespository productRespository;
+    ProductRepository respository;
 
     @Transactional
     public ResponseEntity<List<Product>> findAll() {
-        List<Product> list = productRespository.findAll();
+        List<Product> list = respository.findAll();
         if(list.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-
-
     @Transactional
     public Product findById(int id) {
-        return productRespository.findByIdAndIsVisible(id,true).orElseThrow(() -> new NullPointerException() );
+        return respository.findByIdAndIsVisible(id,true).orElseThrow(() -> new NullPointerException() );
     }
 
 
