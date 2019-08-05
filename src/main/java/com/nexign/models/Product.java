@@ -1,13 +1,11 @@
 package com.nexign.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -31,27 +29,11 @@ public class Product implements Serializable {
     @Column(name = "create_date", insertable = false)
     private Date createDate;
 
-    @OneToMany(mappedBy = "productId", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductHistories> productHistoriesList;
-
+    @OneToOne(mappedBy = "productId"/*, cascade = CascadeType.ALL*/)
+    private ProductHistories productHistories;
 
 
     public Product() {
-    }
-
-    public Product(String productName, String producer) {
-        this.productName = productName;
-        this.producer = producer;
-    }
-
-    @JsonIgnore
-    public Boolean getVisible() {
-        return isVisible;
-    }
-
-    @JsonIgnore
-    public Date getCreateDate() {
-        return createDate;
     }
 
 }

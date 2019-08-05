@@ -1,6 +1,5 @@
 package com.nexign.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,10 +17,7 @@ public class ProductHistories implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-//    @Column(name = "product_id")
-//private Integer productId;
-
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "product_id")
     private Product productId;
 
@@ -41,29 +37,6 @@ public class ProductHistories implements Serializable {
 
 
     public ProductHistories() {
-    }
-
-//    public ProductHistories(Integer productId, Double calories, Double carbohydrate, Double fat, Double proteins) {
-//        this.productId = productId;
-//        this.calories = calories;
-//        this.carbohydrate = carbohydrate;
-//        this.fat = fat;
-//        this.proteins = proteins;
-//    }
-
-    @JsonIgnore
-    public Product getProductId() {
-        return productId;
-    }
-
-    @JsonIgnore
-    public Boolean getIsVisible() {
-        return isVisible;
-    }
-
-    @JsonIgnore
-    public Date getUpdateDate() {
-        return updateDate;
     }
 
 }

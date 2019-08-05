@@ -48,7 +48,7 @@
             </column>
 
             <column name="product_id" type="INT">
-                <constraints nullable="false"/>
+                <constraints nullable="false" foreignKeyName="fk_product_id" references="products(id)"/>
             </column>
 
             <column name="calories" type="DOUBLE(7,2)" defaultValue="0">

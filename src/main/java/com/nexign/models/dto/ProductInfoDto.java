@@ -1,8 +1,6 @@
 package com.nexign.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.nexign.models.Product;
-import com.nexign.models.ProductHistories;
 import lombok.Getter;
 import lombok.Setter;
 
