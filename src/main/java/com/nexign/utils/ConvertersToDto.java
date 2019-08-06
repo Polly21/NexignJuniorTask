@@ -22,11 +22,11 @@ public class ConvertersToDto {
 
         productInfoDto.setProducer(product.getProducer());
         productInfoDto.setProductName(product.getProductName());
-        productInfoDto.setFat(product.getProductHistories().getFat());
-        productInfoDto.setCarbohydrate(product.getProductHistories().getCarbohydrate());
-        productInfoDto.setCalories(product.getProductHistories().getCalories());
-        productInfoDto.setProteins(product.getProductHistories().getProteins());
-        productInfoDto.setFat(product.getProductHistories().getFat());
+        productInfoDto.setFat(product.getProductHistories().get(0).getFat());
+        productInfoDto.setCarbohydrate(product.getProductHistories().get(0).getCarbohydrate());
+        productInfoDto.setCalories(product.getProductHistories().get(0).getCalories());
+        productInfoDto.setProteins(product.getProductHistories().get(0).getProteins());
+        productInfoDto.setFat(product.getProductHistories().get(0).getFat());
 
         return productInfoDto;
     }
@@ -34,7 +34,7 @@ public class ConvertersToDto {
     public static List<ProductInfoDto> createProductInfoDtoListFromProductList(List<Product> productList) {
         List<ProductInfoDto> productInfoDtoList = new LinkedList<>();
 
-        for(Product product : productList) {
+        for (Product product : productList) {
             productInfoDtoList.add(createProductInfoDtoFromProduct(product));
         }
 

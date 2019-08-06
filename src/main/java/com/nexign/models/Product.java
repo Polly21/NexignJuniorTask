@@ -3,18 +3,19 @@ package com.nexign.models;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
+import org.hibernate.annotations.WhereJoinTable;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
 @Getter
 @Setter
-//@Where(clause = "is_visible = true AND id IN (" +
-//        "select abb.product_id from (" +
-//        " select ph.product_id, MAX(ph.id) from products_hist ph where ph.is_visible = true group by ph.product_id) as abb")
+@WhereJoinTable(clause = "products_hist.id IN (select MAX(ph.id) from products_hist ph WHERE products_hist.is_visible = true group by products_hist.product_id)")
+@Where(clause = "is_visible = true")
 public class Product implements Serializable {
 
     @Id
@@ -33,11 +34,8 @@ public class Product implements Serializable {
     @Column(name = "create_date", insertable = false)
     private Date createDate;
 
-    @OneToOne(mappedBy = "productId"/*, cascade = CascadeType.ALL*/)
-    private ProductHistories productHistories;
-
-
-    public Product() {
-    }
+    @OneToMany(mappedBy = "productId"/*, cascade = CascadeType.ALL*/)
+    @Where(clause = "id IN (select MAX(ph.id) from products_hist ph WHERE ph.is_visible = true group by ph.product_id)")
+    private List<ProductHistories> productHistories;
 
 }

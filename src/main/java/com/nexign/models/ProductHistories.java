@@ -17,7 +17,7 @@ public class ProductHistories implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product productId;
 
@@ -34,9 +34,5 @@ public class ProductHistories implements Serializable {
 
     @Column(name = "update_date", insertable = false)
     private Date updateDate;
-
-
-    public ProductHistories() {
-    }
 
 }

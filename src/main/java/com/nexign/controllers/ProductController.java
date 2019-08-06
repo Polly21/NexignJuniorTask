@@ -15,20 +15,23 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    ProductService productService;
+    private ProductService productService;
 
     /**
-     * Get all products
+     * Get Product by name - реализация нечеткого поиска
+     *
+     * @param nameProduct - название продукта по которому будет производиться нечеткий поиск
+     * @return - Возвращает объект ProductDto (навзание продукта, производитель)
      */
-    @GetMapping("/")
-    public List<ProductInfoDto> getAllProducts() {
-        return productService.findAll();
+    @GetMapping("/{name}")
+    public List<ProductDto> getProductsByName(@PathVariable(value = "name") String nameProduct) {
+        return productService.findProductsByName(nameProduct);
     }
 
     /**
      * Get Products by id
      */
-    @GetMapping("/SpecificProduct/{id}")
+    @GetMapping("/product/{id}")
     public ProductInfoDto getSpecificProduct(@PathVariable(value = "id") Integer productId) {
         return productService.findById(productId);
     }
@@ -39,20 +42,9 @@ public class ProductController {
      * @param nameProduct - Название продукта
      * @param producer    - Производитель
      */
-    @GetMapping("/SpecificProduct")
+    @GetMapping("/product")
     public ProductInfoDto getSpecificProductAsParams(@RequestParam(value = "name") String nameProduct, @RequestParam(value = "producer") String producer) {
         return productService.findByProductNameAndProducer(nameProduct, producer);
-    }
-
-    /**
-     * Get Product by name - реализация нечеткого поиска
-     *
-     * @param nameProduct - название продукта по которому будет производиться нечеткий поиск
-     * @return - Возвращает объект ProductDto (навзание продукта, производитель)
-     */
-    @GetMapping("/{name}")
-    public List<ProductDto> getSpecificProduct(@PathVariable(value = "name") String nameProduct) {
-        return productService.findProductsByName(nameProduct);
     }
 
     /**

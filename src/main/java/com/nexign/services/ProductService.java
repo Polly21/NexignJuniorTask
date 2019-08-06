@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -81,7 +82,7 @@ public class ProductService {
         productHistories.setCarbohydrate(productInfoDto.getCarbohydrate());
         productHistories.setFat(productInfoDto.getFat());
         productHistories.setProteins(productInfoDto.getProteins());
-        product.setProductHistories(productHistories);
+        product.setProductHistories(Collections.singletonList(productHistories));
 
         productRepository.save(product);
 
