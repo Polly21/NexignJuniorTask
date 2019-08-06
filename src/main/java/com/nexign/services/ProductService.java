@@ -36,7 +36,7 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductInfoDto findById(int id) {
+    public ProductInfoDto findById(long id) {
 
         return ConvertersToDto.createProductInfoDtoFromProduct(
                 productRepository.findById(id)
@@ -93,7 +93,7 @@ public class ProductService {
     }
 
     @Transactional
-    public Integer update(Integer id, ProductHistories productHistories) {
+    public Integer update(Long id, ProductHistories productHistories) {
         if (id != null) {
             Product product = new Product();
             product.setId(id);

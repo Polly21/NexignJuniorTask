@@ -20,7 +20,7 @@ public class Product implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "product_name", nullable = false)
     private String productName;
@@ -34,6 +34,9 @@ public class Product implements Serializable {
     @Column(name = "create_date", insertable = false)
     private Date createDate;
 
+    /**
+     * Используется OneToMany т.к. в таблице products_hist хранится история информации о продукте
+     */
     @OneToMany(mappedBy = "productId"/*, cascade = CascadeType.ALL*/)
     @Where(clause = "id IN (select MAX(ph.id) from products_hist ph WHERE ph.is_visible = true group by ph.product_id)")
     private List<ProductHistories> productHistories;

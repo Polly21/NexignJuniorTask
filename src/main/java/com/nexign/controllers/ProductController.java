@@ -32,7 +32,7 @@ public class ProductController {
      * Get Products by id
      */
     @GetMapping("/product/{id}")
-    public ProductInfoDto getSpecificProduct(@PathVariable(value = "id") Integer productId) {
+    public ProductInfoDto getSpecificProduct(@PathVariable(value = "id") Long productId) {
         return productService.findById(productId);
     }
 
@@ -62,7 +62,7 @@ public class ProductController {
      * @param productHistories - Объект содержащий только характеристики продукта (без название и производителя)
      */
     @PostMapping("/{id}")
-    public Integer updateProduct(@Valid @RequestBody ProductHistories productHistories, @PathVariable(value = "id") Integer id) {
+    public Integer updateProduct(@Valid @RequestBody ProductHistories productHistories, @PathVariable(value = "id") Long id) {
         return productService.update(id, productHistories);
     }
 
