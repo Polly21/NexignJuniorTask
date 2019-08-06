@@ -2,6 +2,7 @@ package com.nexign.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,6 +12,9 @@ import java.util.Date;
 @Table(name = "products")
 @Getter
 @Setter
+//@Where(clause = "is_visible = true AND id IN (" +
+//        "select abb.product_id from (" +
+//        " select ph.product_id, MAX(ph.id) from products_hist ph where ph.is_visible = true group by ph.product_id) as abb")
 public class Product implements Serializable {
 
     @Id

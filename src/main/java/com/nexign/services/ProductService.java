@@ -39,7 +39,7 @@ public class ProductService {
 
         return ConvertersToDto.createProductInfoDtoFromProduct(
                 productRepository.findById(id)
-                        .orElseThrow(() -> new NullPointerException()));
+                        .orElseThrow(NullPointerException::new));
     }
 
     @Transactional
@@ -47,26 +47,27 @@ public class ProductService {
 
         return ConvertersToDto.createProductInfoDtoFromProduct(
                 productRepository.findByProductNameAndProducer(productName, producer)
-                        .orElseThrow(() -> new NullPointerException()));
+                        .orElseThrow(NullPointerException::new));
     }
 
     @Transactional
     public List<ProductDto> findProductsByName(String nameProduct) {
-        Levenshtein l = new Levenshtein();
-        List<ProductDto> newList = new LinkedList<>();
+        Levenshtein levenshtein = new Levenshtein();
+        List<ProductDto> filteredProductsList = new LinkedList<>();
 
-        List<Product> list = productRepository.findAll();
+        int infelicity = nameProduct.length() / 2;
+        List<Product> allProductsList = productRepository.findAll();
 
-        for (Product product : list) {
-            if (l.distance(product.getProductName(), nameProduct) <= nameProduct.length() / 2) {
-                newList.add(ConvertersToDto.createProductDtoFromProduct(product));
+        for (Product product : allProductsList) {
+            if (levenshtein.distance(product.getProductName(), nameProduct) <= infelicity) {
+                filteredProductsList.add(ConvertersToDto.createProductDtoFromProduct(product));
             }
         }
-        if (newList == null || newList.isEmpty()) {
+        if (filteredProductsList.isEmpty()) {
             return null;
         }
 
-        return newList;
+        return filteredProductsList;
     }
 
     @Transactional

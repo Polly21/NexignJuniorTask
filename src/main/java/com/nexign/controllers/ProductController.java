@@ -20,7 +20,7 @@ public class ProductController {
     /**
      * Get all products
      */
-    @GetMapping("/AllProducts")
+    @GetMapping("/")
     public List<ProductInfoDto> getAllProducts() {
         return productService.findAll();
     }
@@ -50,7 +50,7 @@ public class ProductController {
      * @param nameProduct - название продукта по которому будет производиться нечеткий поиск
      * @return - Возвращает объект ProductDto (навзание продукта, производитель)
      */
-    @GetMapping("/SearchProductByName/{name}")
+    @GetMapping("/{name}")
     public List<ProductDto> getSpecificProduct(@PathVariable(value = "name") String nameProduct) {
         return productService.findProductsByName(nameProduct);
     }
@@ -58,7 +58,7 @@ public class ProductController {
     /**
      * Create a new Product
      */
-    @PostMapping("/addProduct")
+    @PostMapping("/")
     public ProductInfoDto createProduct(@Valid @RequestBody ProductInfoDto productInfoDto) {
         productService.save(productInfoDto);
         return productInfoDto;
@@ -67,9 +67,9 @@ public class ProductController {
     /**
      * Update product
      *
-     * @param productHistories - Объект содержащий только характеристики продукта (не название и производителя)
+     * @param productHistories - Объект содержащий только характеристики продукта (без название и производителя)
      */
-    @PostMapping("/updateProduct/{id}")
+    @PostMapping("/{id}")
     public Integer updateProduct(@Valid @RequestBody ProductHistories productHistories, @PathVariable(value = "id") Integer id) {
         return productService.update(id, productHistories);
     }
