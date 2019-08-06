@@ -29,14 +29,6 @@ public class ProductController {
     }
 
     /**
-     * Get Products by id
-     */
-    @GetMapping("/product/{id}")
-    public ProductInfoDto getSpecificProduct(@PathVariable(value = "id") Long productId) {
-        return productService.findById(productId);
-    }
-
-    /**
      * Get Product by name and producer
      *
      * @param nameProduct - Название продукта
@@ -45,6 +37,14 @@ public class ProductController {
     @GetMapping("/product")
     public ProductInfoDto getSpecificProductAsParams(@RequestParam(value = "name") String nameProduct, @RequestParam(value = "producer") String producer) {
         return productService.findByProductNameAndProducer(nameProduct, producer);
+    }
+
+    /**
+     * Get Products by id
+     */
+    @GetMapping("/product/{id}")
+    public ProductInfoDto getSpecificProduct(@PathVariable(value = "id") Long productId) {
+        return productService.findById(productId);
     }
 
     /**
