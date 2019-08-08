@@ -26,7 +26,6 @@ public class ConvertersToDto {
         productInfoDto.setCarbohydrate(product.getProductHistories().get(0).getCarbohydrate());
         productInfoDto.setCalories(product.getProductHistories().get(0).getCalories());
         productInfoDto.setProteins(product.getProductHistories().get(0).getProteins());
-        productInfoDto.setFat(product.getProductHistories().get(0).getFat());
 
         return productInfoDto;
     }
