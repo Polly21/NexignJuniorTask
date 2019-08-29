@@ -14,7 +14,7 @@ import java.util.List;
 @Table(name = "products")
 @Getter
 @Setter
-@WhereJoinTable(clause = "products_hist.id IN (select MAX(ph.id) from products_hist ph WHERE products_hist.is_visible = true group by products_hist.product_id)")
+//@WhereJoinTable(clause = "products_hist.id IN (select MAX(ph.id) from products_hist ph WHERE products_hist.is_visible = true group by products_hist.product_id)")
 @Where(clause = "is_visible = true")
 public class Product implements Serializable {
 
